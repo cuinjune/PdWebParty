@@ -50,47 +50,7 @@ The goal of this project is to create a simplified version of the [Purr Data web
 * Almost all Pd-vanilla and extra (e.g. sigmund~) objects should work. (Haven't tested all objects yet)
 
 ## Supported externals
-* arraysize 
-* autotune 
-* bassemu 
-* boids 
-* bsaylor 
-* comport 
-* creb 
-* cxc 
-* earplug 
-* ekext 
-* ext13 
-* freeverb 
-* ggee 
-* hcs 
-* iem_ambi 
-* iem_bin_ambi 
-* iemguts 
-* iem_adaptfilt 
-* iem_delay 
-* iem_roomsim 
-* iem_spec2 
-* jasch_lib 
-* loaders-libdir 
-* mapping 
-* markex 
-* maxlib 
-* mjlib 
-* moonlib 
-* motex 
-* mrpeach 
-* pan 
-* pddp 
-* rjlib 
-* plugin 
-* pmpd 
-* sigpack 
-* smlib 
-* tof 
-* unauthorized 
-* vbap 
-* windowing
+* arraysize, autotune, bassemu, boids, bsaylor, comport, creb, cxc, earplug, ekext, ext13, freeverb, ggee, hcs, iem_ambi, iem_bin_ambi, iemguts, iem_adaptfilt, iem_delay, iem_roomsim, iem_spec2, jasch_lib, loaders-libdir, mapping, markex, maxlib, mjlib, moonlib, motex, mrpeach, pan, pddp, rjlib, plugin, pmpd, sigpack, smlib, tof, unauthorized, vbap, windowing
 
 ## Setup
 1. Installation of node.js is required. Follow [this guide](https://github.com/itp-dwd/2020-spring/blob/master/guides/installing-nodejs.md) to install it.
