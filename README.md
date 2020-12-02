@@ -1,5 +1,5 @@
 # PdWebParty
-<img src="screenshot.jpeg" width="350"/>
+<img src="screenshots.png" width="1000"/>
 
 ## Table of Contents
 - [Description](#description)
