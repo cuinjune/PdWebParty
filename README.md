@@ -13,7 +13,7 @@ The project was inspired by Dan Wilcox's [PdParty](http://danomatika.com/code/pd
 The goal of the project is to allow Pd users to run their Pd patches on any device through a web browser and easily share them with others by using a web link.
 
 ## Running your Pd patch
-* Create your Pd patch with the GUI objects (See [supported GUI objects](#supported-gui-objects)) placed in the main patch. (The GUI objects in subpatches will not appear the app)
+* Create your Pd patch with the GUI objects (See [supported GUI objects](#supported-gui-objects)) placed in the main patch. (The GUI objects in subpatches will not appear in the app)
 * All GUI objects should communicate with the main audio patches using send and receive only. (The GUI objects without send/receive names will not appear in the app)
 * Drag and Drop your Pd patch to the app's page to upload it. (The previous patch will be replaced with the uploaded one)
 
