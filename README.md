@@ -93,6 +93,6 @@ Feel free to contact the [author](#author) if you have any questions or suggesti
 Please post an [issue](https://github.com/cuinjune/PdWebParty/issues) if you face any problem using the app.
 
 ## Author
-Copyright (c) 2018 Zack Lee: <cuinjune@gmail.com><br />
+Copyright (c) 2020 Zack Lee: <cuinjune@gmail.com><br />
 GNU General Public License v3.0<br />
 For information on usage and redistribution, and for a DISCLAIMER OF ALL WARRANTIES, see the file, "LICENSE" in this distribution.
