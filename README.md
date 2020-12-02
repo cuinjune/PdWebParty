@@ -7,7 +7,7 @@
 - [Sharing your Pd patch](#sharing-your-pd-patch)
 - [Supported GUI objects](#supported-gui-objects)
 - [Supported Pd objects](#supported-pd-objects)
-- [Supported externals](#supported-externals]
+- [Supported externals](#supported-externals)
 - [Setup](#setup)
 - [Developing PdWebParty](#developing-pdwebparty)
 - [Reporting Bugs](#reporting-bugs)
