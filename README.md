@@ -1,6 +1,18 @@
 # PdWebParty
 <img src="screenshot.jpeg" width="350"/>
 
+## Table of Contents
+- [Description](#description)
+- [Running your Pd patch](#running-your-pd-patch)
+- [Sharing your Pd patch](#sharing-your-pd-patch)
+- [Supported GUI objects](#supported-gui-objects)
+- [Supported Pd objects](#supported-pd-objects)
+- [Supported externals/libraries](#supported-externals/libraries
+- [Setup](#setup)
+- [Developing PdWebParty](#developing-pdwebparty)
+- [Reporting Bugs](#reporting-bugs)
+- [Author](#author)
+
 ## Description
 **PdWebParty** is an open-source web application for running Pd patches in a web browser. 
 
@@ -28,9 +40,9 @@ The goal of the project is to allow Pd users to run their Pd patches on any devi
 * Currently, only Bang(bng), Toggle(tgl), Canvas(cnv), and Comment are supported. (Other objects will be added soon)
 
 ## Supported Pd objects
-* Almost all Pd-vanilla and extra (e.g. sigmund~) objects should work. (Haven't tested all objects)
+* Almost all Pd-vanilla and extra (e.g. sigmund~) objects should work. (Haven't tested all objects yet)
 
-## Supported externals/libraries (not tested)
+## Supported externals/libraries
 * arraysize 
 * autotune 
 * bassemu 
