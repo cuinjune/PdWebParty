@@ -16,7 +16,7 @@
 - [Author](#author)
 
 ## Description
-**PdWebParty** is an open-source web application that allows Pd users to run their Pd patches on any device through a web browser and easily share them with others by using a web link.
+**PdWebParty** is an open-source web application that allows Pd users to run their Pd patches on any device through a web brower, making the patches easily shareable with a weblink.
 
 Here's the [Link to the app](https://pdwebparty.herokuapp.com/).
 You can also use the following QR code to go to the app link on your mobile device.
