@@ -5,6 +5,7 @@
 - [Description](#description)
 - [Running your Pd patch](#running-your-pd-patch)
 - [Sharing your Pd patch](#sharing-your-pd-patch)
+- [Using MIDI](#using-midi)
 - [Supported GUI objects](#supported-gui-objects)
 - [Supported Pd objects](#supported-pd-objects)
 - [Supported externals](#supported-externals)
@@ -37,6 +38,10 @@ The goal of this project is to create a simplified version of the [Purr Data web
   https://pdwebparty.herokuapp.com/?url=LINK
   ```
 * Example: https://pdwebparty.herokuapp.com/?url=https://patchstorage.com/wp-content/uploads/2020/12/default.pd
+
+## Using MIDI
+* Pd's MIDI objects (e.g. [notein]) can be used to send and receive MIDI messages.
+* The MIDI should work in all browsers that natively support the Web MIDI API. (See the [browser support](https://github.com/djipco/webmidi#browser-support))
 
 ## Supported GUI objects
 * Currently, only Bang(bng), Toggle(tgl), Canvas(cnv), and Comment are supported. (Other objects will be added soon)
