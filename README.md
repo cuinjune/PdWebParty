@@ -40,7 +40,7 @@ The goal of this project is to create a simplified version of the [Purr Data web
 * Example: https://pdwebparty.herokuapp.com/?url=https://patchstorage.com/wp-content/uploads/2020/12/default.pd
 
 ## Using MIDI
-* Pd's MIDI objects (e.g. [notein]) can be used to send and receive MIDI messages.
+* Pd's MIDI objects (e.g. [notein]) can be used to send and receive MIDI messages. (The app will open all available MIDI devices by default)
 * The MIDI should work in all browsers that natively support the Web MIDI API. (See the [browser support](https://github.com/djipco/webmidi#browser-support))
 
 ## Supported GUI objects
