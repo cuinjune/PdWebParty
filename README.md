@@ -11,6 +11,7 @@
 - [Setup](#setup)
 - [Developing PdWebParty](#developing-pdwebparty)
 - [Reporting Bugs](#reporting-bugs)
+- [Acknowledgements](#acknowledgements)
 - [Author](#author)
 
 ## Description
@@ -21,7 +22,7 @@ You can also use the following QR code to go to the app link on your mobile devi
 
 <img src="QR.png" alt="QR Code" width="200"/>
 
-The project was inspired by Dan Wilcox's [PdParty](http://danomatika.com/code/pdparty) and Chris McCormick's [PdDroidParty](http://droidparty.net/).  
+The project was inspired by Chris McCormick's [PdDroidParty](http://droidparty.net/) and Dan Wilcox's [PdParty](http://danomatika.com/code/pdparty).
 The goal of the project is to allow Pd users to run their Pd patches on any device through a web browser and easily share them with others by using a web link.
 
 ## Running your Pd patch
@@ -103,6 +104,11 @@ Feel free to contact the [author](#author) if you have any questions or suggesti
 
 ## Reporting bugs
 Please post an [issue](https://github.com/cuinjune/PdWebParty/issues) if you face any problem using the app.
+
+## Acknowledgements
+* Jonathan Wilkes, Ivica Ico Bukvic, and the Purr Data team for help and feedback;
+* Chris McCormick and Dan Wilcox for the inspiration for the project;
+* Miller Puckette and the Pd community for developing and maintaining Pd;
 
 ## Author
 Copyright (c) 2020 Zack Lee: <cuinjune@gmail.com><br />
