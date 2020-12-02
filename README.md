@@ -33,7 +33,7 @@ The goal of this project is to create a simplified version of the [Purr Data web
 * Drag and Drop your Pd patch to the app's page to upload it. (The previous patch will be replaced with the uploaded one)
 
 ## Sharing your Pd patch
-* Upload your Pd patch somehwere on the internet (e.g. [Patchstorage](https://patchstorage.com/), [Github](https://github.com/)) and copy and paste the download link into the LINK: (Starting with "http://" or "https://" and ends with ".pd")
+* Upload your Pd patch somehwere on the internet (e.g. [Patchstorage](https://patchstorage.com/), [Github](https://github.com/)) and copy and paste the download link into the LINK below: (Starting with "http://" or "https://" and ends with ".pd")
   ```  
   https://pdwebparty.herokuapp.com/?url=LINK
   ```
