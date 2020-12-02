@@ -24,7 +24,7 @@ You can also use the following QR code to go to the app link on your mobile devi
 
 The project was inspired by Chris McCormick's [PdDroidParty](http://droidparty.net/) and Dan Wilcox's [PdParty](http://danomatika.com/code/pdparty), and it was built based on the [GSoC 2020 project for Purr Data](https://github.com/cuinjune/purr-data) to make the native Purr Data run in a web browser which is still in development. 
 
-The goal of this project is to create a simplified version of the Purr Data web app that only supports running and sharing Pd patches through a web browser. (At least until the Purr Data web app becomes ready to be used)
+The goal of this project is to create a simplified version of the [Purr Data web app](https://cuinjune-purr-data.glitch.me/) that only supports running and sharing Pd patches through a web browser. (At least until the Purr Data web app becomes ready to be used)
 
 ## Running your Pd patch
 * Create your Pd patch with the GUI objects (See [supported GUI objects](#supported-gui-objects)) placed in the main patch. (The GUI objects in subpatches will not appear in the app)
