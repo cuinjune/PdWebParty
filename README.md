@@ -7,7 +7,7 @@
 - [Sharing your Pd patch](#sharing-your-pd-patch)
 - [Supported GUI objects](#supported-gui-objects)
 - [Supported Pd objects](#supported-pd-objects)
-- [Supported externals/libraries](#supported-externals/libraries
+- [Supported externals](#supported-externals]
 - [Setup](#setup)
 - [Developing PdWebParty](#developing-pdwebparty)
 - [Reporting Bugs](#reporting-bugs)
@@ -42,7 +42,7 @@ The goal of the project is to allow Pd users to run their Pd patches on any devi
 ## Supported Pd objects
 * Almost all Pd-vanilla and extra (e.g. sigmund~) objects should work. (Haven't tested all objects yet)
 
-## Supported externals/libraries
+## Supported externals
 * arraysize 
 * autotune 
 * bassemu 
