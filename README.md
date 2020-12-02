@@ -15,15 +15,14 @@
 - [Author](#author)
 
 ## Description
-**PdWebParty** is an open-source web application for running Pd patches in a web browser. 
+**PdWebParty** is an open-source web application for running Pd patches in a web browser to allow Pd users to run their Pd patches on any device through a web browser and easily share them with others by using a web link.
 
 Here's the [Link to the app](https://pdwebparty.herokuapp.com/).
 You can also use the following QR code to go to the app link on your mobile device.
 
 <img src="QR.png" alt="QR Code" width="200"/>
 
-The project was inspired by Chris McCormick's [PdDroidParty](http://droidparty.net/) and Dan Wilcox's [PdParty](http://danomatika.com/code/pdparty).
-The goal of the project is to allow Pd users to run their Pd patches on any device through a web browser and easily share them with others by using a web link.
+The project was inspired by Chris McCormick's [PdDroidParty](http://droidparty.net/) and Dan Wilcox's [PdParty](http://danomatika.com/code/pdparty), and it was built based on the [GSoC 2020 project for Purr Data](https://github.com/cuinjune/purr-data) to make the native Purr Data run in a web browser which is still in development. The goal of this project is to create a simplified version of the Purr Data web app that only supports running and sharing Pd patches through a web browser. (At least until the Purr Data web app becomes ready to be used)
 
 ## Running your Pd patch
 * Create your Pd patch with the GUI objects (See [supported GUI objects](#supported-gui-objects)) placed in the main patch. (The GUI objects in subpatches will not appear in the app)
