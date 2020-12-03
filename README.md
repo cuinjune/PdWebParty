@@ -29,12 +29,12 @@ The goal of this project is to create a simplified version of the [Purr Data web
 
 ## Running your Pd patch
 * Create your Pd patch with the GUI objects (See [supported GUI objects](#supported-gui-objects)) placed in the main patch. (The GUI objects in subpatches will not appear in the app)
-* All GUI objects should communicate with the main audio patches using send and receive only. (The GUI objects without send/receive names will not appear in the app)
+* All GUI objects should communicate with the main audio patches using **send and receive** only. (The GUI objects without send/receive names will not appear in the app)
 * The size of the main patch will be the maximum size of your device's screen. (It will be stretched to always fit into the screen) 
 * Drag and Drop your Pd patch to the app's page to upload it. (The previous patch will be replaced with the uploaded one)
 
 ## Sharing your Pd patch
-* Upload your Pd patch somewhere on the internet (e.g. [Patchstorage](https://patchstorage.com/), [Github](https://github.com/)) and copy and paste the download link into the LINK below: (Starting with "http://" or "https://" and ends with ".pd")
+* Upload your Pd patch somewhere on the internet (e.g. [Patchstorage](https://patchstorage.com/), [Github](https://github.com/)) and copy and paste the **direct download link** into the LINK below: (Starting with "http://" or "https://")
   ```  
   https://pdwebparty.herokuapp.com/?url=LINK
   ```
