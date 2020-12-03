@@ -1457,17 +1457,12 @@ async function init() {
     let filename = "";
     if (patchURL) {
         filename = patchURL.split("/").pop();
-        if (filename.split(".").pop() === "pd") {
-            const patchData = await getPatchData(patchURL);
-            if (patchData.error) {
-                alert(`Failed to access the file from ${patchURL}`);
-            }
-            else {
-                content = patchData.content;
-            }
+        const patchData = await getPatchData(patchURL);
+        if (patchData.error) {
+            alert(`Failed to access the file from ${patchURL}`);
         }
         else {
-            alert(`The URL is not a pd file.`);
+            content = patchData.content;
         }
     }
     if (!content) {
