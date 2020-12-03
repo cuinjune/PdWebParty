@@ -1,6 +1,7 @@
 ## How to rebuild files in this directory
 
-The emscripten backend of PdWebParty was originally written and compiled for the Purr Data web app. You can learn more about the project from this repo: https://git.purrdata.net/jwilkes/purr-data/-/tree/emscripten/emscripten/project/purr-data
+The emscripten backend of PdWebParty was originally written and compiled for the Purr Data web app.  
+You can learn more about the project from this repo: https://git.purrdata.net/jwilkes/purr-data/-/tree/emscripten/emscripten/project/purr-data
 
 Here's the instructions on how to rebuild the emscripten backend:
 
