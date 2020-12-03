@@ -38,7 +38,8 @@ The goal of this project is to create a simplified version of the [Purr Data web
   ```  
   https://pdwebparty.herokuapp.com/?url=LINK
   ```
-* Example: https://pdwebparty.herokuapp.com/?url=https://patchstorage.com/wp-content/uploads/2020/12/default.pd
+* Example1: https://pdwebparty.herokuapp.com/?url=https://patchstorage.com/wp-content/uploads/2020/12/default.pd
+* Example2: https://pdwebparty.herokuapp.com/?url=https://raw.githubusercontent.com/cuinjune/PdWebParty/master/default.pd
 
 ## Using MIDI
 * Pd's MIDI objects (e.g. [notein]) can be used to send and receive MIDI messages. (The app will open all available MIDI devices by default)
