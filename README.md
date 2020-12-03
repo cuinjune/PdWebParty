@@ -75,6 +75,7 @@ Please post an [issue](https://github.com/cuinjune/PdWebParty/issues) if you fac
 
 ## Acknowledgements
 * Jonathan Wilkes, Ivica Ico Bukvic, and the Purr Data team for help and feedback;
+* Claude Heiland-Allen for creating [empd](https://mathr.co.uk/empd/) which was super helpful for building the emscripten backend;
 * Chris McCormick and Dan Wilcox for the inspiration for the project;
 * Miller Puckette and the Pd community for developing and maintaining Pd;
 
