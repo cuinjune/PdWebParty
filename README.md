@@ -12,6 +12,7 @@
 - [Setup](#setup)
 - [Developing PdWebParty](#developing-pdwebparty)
 - [Reporting Bugs](#reporting-bugs)
+- [Examples](#examples)
 - [Acknowledgements](#acknowledgements)
 - [Author](#author)
 
@@ -72,6 +73,10 @@ Feel free to contact the [author](#author) if you have any questions or suggesti
 
 ## Reporting bugs
 Please post an [issue](https://github.com/cuinjune/PdWebParty/issues) if you face any problem using the app.
+
+## Examples
+* Yann Seznec: https://bit.ly/2VE28Rl
+* Please contact the [author](#author) if you create something interesting to share.
 
 ## Acknowledgements
 * Jonathan Wilkes, Ivica Ico Bukvic, and the Purr Data team for help and feedback;
