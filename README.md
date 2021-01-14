@@ -47,7 +47,7 @@ The goal of this project is to create a simplified version of the [Purr Data web
 * The MIDI should work in all browsers that natively support the Web MIDI API. (See the [browser support](https://github.com/djipco/webmidi#browser-support))
 
 ## Supported GUI objects
-* Currently, only Bang(bng), Toggle(tgl), Canvas(cnv), and Comment are supported. (Other objects will be added soon)
+* Currently, Bang(bng), Toggle(tgl), Sliders(vsl, hsl), Radio Buttons(vradio, hradio), Canvas(cnv), and Comment are supported. (Other objects will be added soon)
 
 ## Supported Pd objects
 * Almost all Pd-vanilla and extra (e.g. [sigmund~]) objects should work. (Haven't tested all objects yet)

@@ -310,6 +310,14 @@ var Module = {
                             data.value = data.value ? 0 : data.default_value;
                             gui_tgl_update_cross(data);
                             break;
+                        case "vsl":
+                        case "hsl":
+                            gui_slider_bang(data);
+                            break;
+                        case "vradio":
+                        case "hradio":
+                            Module.pd.sendFloat(data.send, data.value);
+                            break;
                     }
                 }
             }
@@ -325,6 +333,17 @@ var Module = {
                         case "tgl":
                             data.value = value;
                             gui_tgl_update_cross(data);
+                            break;
+                        case "vsl":
+                        case "hsl":
+                            gui_slider_set(data, value);
+                            gui_slider_bang(data);
+                            break;
+                        case "vradio":
+                        case "hradio":
+                            data.value = Math.min(Math.max(Math.floor(value), 0), data.number - 1);
+                            gui_radio_update_button(data);
+                            Module.pd.sendFloat(data.send, data.value);
                             break;
                     }
                 }
@@ -353,6 +372,17 @@ var Module = {
                         case "tgl":
                             data.value = list[0];
                             gui_tgl_update_cross(data);
+                            break;
+                        case "vsl":
+                        case "hsl":
+                            gui_slider_set(data, list[0]);
+                            gui_slider_bang(data);
+                            break;
+                        case "vradio":
+                        case "hradio":
+                            data.value = Math.min(Math.max(Math.floor(list[0]), 0), data.number - 1);
+                            gui_radio_update_button(data);
+                            Module.pd.sendFloat(data.send, data.value);
                             break;
                     }
                 }
@@ -489,6 +519,162 @@ var Module = {
                                     data.default_value = list[0];
                                     data.value = data.default_value;
                                     gui_tgl_update_cross(data);
+                                    break;
+                            }
+                            break;
+                        case "vsl":
+                        case "hsl":
+                            switch (symbol) {
+                                case "size":
+                                    if (list.length === 1) {
+                                        data.width = list[0] || 8;
+                                    }
+                                    else {
+                                        data.width = list[0] || 8;
+                                        data.height = list[1] || 2;
+                                    }
+                                    configure_item(data.rect, gui_slider_rect(data));
+                                    configure_item(data.indicator, gui_slider_indicator(data));
+                                    gui_slider_check_minmax(data);
+                                    break;
+                                case "range":
+                                    data.bottom = list[0];
+                                    data.top = list[1] || 0;
+                                    gui_slider_check_minmax(data);
+                                    break;
+                                case "lin":
+                                    data.log = 0;
+                                    gui_slider_check_minmax(data);
+                                    break;
+                                case "log":
+                                    data.log = 1;
+                                    gui_slider_check_minmax(data);
+                                    break;
+                                case "init":
+                                    data.init = list[0];
+                                    break;
+                                case "steady":
+                                    data.steady_on_click = list[0];
+                                    break;
+                                case "send":
+                                    data.send = list[0];
+                                    break;
+                                case "receive":
+                                    gui_unsubscribe(data);
+                                    data.receive = list[0];
+                                    gui_subscribe(data);
+                                    break;
+                                case "label":
+                                    data.label = list[0] === "empty" ? "" : list[0];
+                                    data.text.textContent = data.label;
+                                    break;
+                                case "label_pos":
+                                    data.x_off = list[0];
+                                    data.y_off = list[1] || 0;
+                                    configure_item(data.text, gui_slider_text(data));
+                                    break;
+                                case "label_font":
+                                    data.font = list[0];
+                                    data.fontsize = list[1] || 0;
+                                    configure_item(data.text, gui_slider_text(data));
+                                    break;
+                                case "color":
+                                    data.bg_color = list[0];
+                                    data.fg_color = list[1] || 0;
+                                    data.label_color = list[2] || 0;
+                                    configure_item(data.rect, gui_slider_rect(data));
+                                    configure_item(data.indicator, gui_slider_indicator(data));
+                                    configure_item(data.text, gui_slider_text(data));
+                                    break;
+                                case "pos":
+                                    data.x_pos = list[0];
+                                    data.y_pos = list[1] || 0;
+                                    configure_item(data.rect, gui_slider_rect(data));
+                                    configure_item(data.indicator, gui_slider_indicator(data));
+                                    configure_item(data.text, gui_slider_text(data));
+                                    break;
+                                case "delta":
+                                    data.x_pos += list[0];
+                                    data.y_pos += list[1] || 0;
+                                    configure_item(data.rect, gui_slider_rect(data));
+                                    configure_item(data.indicator, gui_slider_indicator(data));
+                                    configure_item(data.text, gui_slider_text(data));
+                                    break;
+                                case "set":
+                                    gui_slider_set(data, list[0]);
+                                    break;
+                            }
+                            break;
+                        case "vradio":
+                        case "hradio":
+                            switch (symbol) {
+                                case "size":
+                                    data.size = list[0] || 8;
+                                    configure_item(data.rect, gui_radio_rect(data));
+                                    gui_radio_update_lines_buttons(data);
+                                    break;
+                                case "init":
+                                    data.init = list[0];
+                                    break;
+                                case "number":
+                                    const n = Math.min(Math.max(Math.floor(list[0]), 1), 128);
+                                    if (n !== data.number) {
+                                        data.number = n;
+                                        if (data.value >= data.number) {
+                                            data.value = data.number - 1;
+                                        }
+                                        configure_item(data.rect, gui_radio_rect(data));
+                                        gui_radio_remove_lines_buttons(data);
+                                        gui_radio_create_lines_buttons(data);
+                                    }
+                                    break;
+                                case "send":
+                                    data.send = list[0];
+                                    break;
+                                case "receive":
+                                    gui_unsubscribe(data);
+                                    data.receive = list[0];
+                                    gui_subscribe(data);
+                                    break;
+                                case "label":
+                                    data.label = list[0] === "empty" ? "" : list[0];
+                                    data.text.textContent = data.label;
+                                    break;
+                                case "label_pos":
+                                    data.x_off = list[0];
+                                    data.y_off = list[1] || 0;
+                                    configure_item(data.text, gui_radio_text(data));
+                                    break;
+                                case "label_font":
+                                    data.font = list[0];
+                                    data.fontsize = list[1] || 0;
+                                    configure_item(data.text, gui_radio_text(data));
+                                    break;
+                                case "color":
+                                    data.bg_color = list[0];
+                                    data.fg_color = list[1] || 0;
+                                    data.label_color = list[2] || 0;
+                                    configure_item(data.rect, gui_radio_rect(data));
+                                    gui_radio_update_lines_buttons(data);
+                                    configure_item(data.text, gui_radio_text(data));
+                                    break;
+                                case "pos":
+                                    data.x_pos = list[0];
+                                    data.y_pos = list[1] || 0;
+                                    configure_item(data.rect, gui_radio_rect(data));
+                                    gui_radio_update_lines_buttons(data);
+                                    configure_item(data.text, gui_radio_text(data));
+                                    break;
+                                case "delta":
+                                    data.x_pos += list[0];
+                                    data.y_pos += list[1] || 0;
+                                    configure_item(data.rect, gui_radio_rect(data));
+                                    gui_radio_update_lines_buttons(data);
+                                    configure_item(data.text, gui_radio_text(data));
+                                    break;
+                                case "set":
+                                    data.value = Math.min(Math.max(Math.floor(list[0]), 0), data.number - 1);
+                                    gui_radio_update_button(data);
                                     break;
                             }
                             break;
@@ -865,6 +1051,9 @@ function iemgui_fontfamily(font) {
 }
 
 function colfromload(col) { // decimal to hex color
+    if (typeof col === "string") {
+        return col;
+    }
     col = -1 - col;
     col = ((col & 0x3f000) << 6) | ((col & 0xfc0) << 4) | ((col & 0x3f) << 2);
     return "#" + ("000000" + col.toString(16)).slice(-6);
@@ -921,6 +1110,14 @@ function gui_text(data) {
         id: `${data.id}_text`,
         class: "unclickable"
     }
+}
+
+function gui_mousepoint(e) { // transforms the mouse position
+    let point = canvas.createSVGPoint();
+    point.x = e.clientX;
+    point.y = e.clientY;
+    point = point.matrixTransform(canvas.getScreenCTM().inverse());
+    return point;
 }
 
 // bng
@@ -1041,10 +1238,10 @@ function gui_tgl_text(data) {
 
 function gui_tgl_update_cross(data) {
     configure_item(data.cross1, {
-        display: data.value ? "inline" : "none",
+        display: data.value ? "inline" : "none"
     });
     configure_item(data.cross2, {
-        display: data.value ? "inline" : "none",
+        display: data.value ? "inline" : "none"
     });
 }
 
@@ -1052,6 +1249,377 @@ function gui_tgl_onmousedown(data) {
     data.value = data.value ? 0 : data.default_value;
     gui_tgl_update_cross(data);
     Module.pd.sendFloat(data.send, data.value);
+}
+
+// silder: vsl, hsl
+function gui_slider_rect(data) {
+    let x = data.x_pos;
+    let y = data.y_pos;
+    let width = data.width;
+    let height = data.height;
+    if (data.type === "vsl") {
+        y -= 2; // note: modified
+        height += 5;
+    }
+    else {
+        x -= 3; // note: modified
+        width += 5;
+    }
+    return {
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        fill: colfromload(data.bg_color),
+        id: `${data.id}_rect`,
+        class: "border clickable"
+    }
+}
+
+function gui_slider_indicator_points(data) {
+    let x1 = data.x_pos;
+    let y1 = data.y_pos;
+    let x2 = x1 + data.width;
+    let y2 = y1 + data.height;
+    let r = 0;
+    let p1 = 0;
+    let p2 = 0;
+    let p3 = 0;
+    let p4 = 0;
+    if (data.type === "vsl") {
+        y1 -= 2; // note: modified
+        y2 += 3;
+        r = y2 - 3 - (data.value + 50) / 100;
+        p1 = x1 + 2 * 0.75; // note: modified
+        p2 = r;
+        p3 = x2 - 2 * 0.75; // note: modified
+        p4 = r;
+    }
+    else {
+        x1 -= 3; // note: modified
+        r = x1 + 3 + (data.value + 50) / 100;
+        p1 = r;
+        p2 = y1 + 2 * 0.75; // note: modified
+        p3 = r;
+        p4 = y2 - 2 * 0.75; // note: modified
+    }
+    return {
+        x1: p1,
+        y1: p2,
+        x2: p3,
+        y2: p4
+    }
+}
+
+function gui_slider_indicator(data) {
+    const p = gui_slider_indicator_points(data);
+    return {
+        x1: p.x1,
+        y1: p.y1,
+        x2: p.x2,
+        y2: p.y2,
+        stroke: colfromload(data.fg_color),
+        "stroke-width": 3,
+        fill: "none",
+        id: `${data.id}_indicator`,
+        class: "unclickable"
+    }
+}
+
+function gui_slider_text(data) {
+    return gui_text(data);
+}
+
+function gui_slider_update_indicator(data) {
+    const p = gui_slider_indicator_points(data);
+    configure_item(data.indicator, {
+        x1: p.x1,
+        y1: p.y1,
+        x2: p.x2,
+        y2: p.y2
+    });
+}
+
+// slider events
+const touches = {};
+
+function gui_slider_check_minmax(data) {
+    if (data.log) {
+        if (!data.bottom && !data.top) {
+            data.top = 1;
+        }
+        if (data.top > 0) {
+            if (data.bottom <= 0) {
+                data.bottom = 0.01 * data.top;
+            }
+        }
+        else {
+            if (data.bottom > 0) {
+                data.top = 0.01 * data.bottom;
+            }
+        }
+    }
+    data.reverse = data.bottom > data.top;
+    const w = data.type === "vsl" ? data.height : data.width;
+    if (data.log) {
+        data.k = Math.log(data.top / data.bottom) / (w - 1);
+    }
+    else {
+        data.k = (data.top - data.bottom) / (w - 1);
+    }
+}
+
+function gui_slider_set(data, f) {
+    let g = 0;
+    if (data.reverse) {
+        f = Math.max(Math.min(f, data.bottom), data.top);
+    }
+    else {
+        f = Math.max(Math.min(f, data.top), data.bottom);
+    }
+    if (data.log) {
+        g = Math.log(f / data.bottom) / data.k;
+    }
+    else {
+        g = (f - data.bottom) / data.k;
+    }
+    data.value = 100 * g + 0.49999;
+    gui_slider_update_indicator(data);
+}
+
+function gui_slider_bang(data) {
+    let out = 0;
+    if (data.log) {
+        out = data.bottom * Math.exp(data.k * data.value * 0.01);
+    }
+    else {
+        out = data.value * 0.01 * data.k + data.bottom;
+    }
+    if (data.reverse) {
+        out = Math.max(Math.min(out, data.bottom), data.top);
+    }
+    else {
+        out = Math.max(Math.min(out, data.top), data.bottom);
+    }
+    if (out < 1.0e-10 && out > -1.0e-10) {
+        out = 0;
+    }
+    Module.pd.sendFloat(data.send, out);
+}
+
+function gui_slider_onmousedown(data, e, id) {
+    const p = gui_mousepoint(e);
+    if (!data.steady_on_click) {
+        if (data.type === "vsl") {
+            data.value = Math.max(Math.min(100 * (data.height + data.y_pos - p.y), (data.height - 1) * 100), 0);
+        }
+        else {
+            data.value = Math.max(Math.min(100 * (p.x - data.x_pos), (data.width - 1) * 100), 0);
+        }
+        gui_slider_update_indicator(data);
+    }
+    gui_slider_bang(data);
+    touches[id] = {
+        data: data,
+        point: p,
+        value: data.value
+    };
+}
+
+function gui_slider_onmousemove(e, id) {
+    if (id in touches) {
+        const { data, point, value } = touches[id];
+        const p = gui_mousepoint(e);
+        if (data.type === "vsl") {
+            data.value = Math.max(Math.min(value + (point.y - p.y) * 100, (data.height - 1) * 100), 0);
+        }
+        else {
+            data.value = Math.max(Math.min(value + (p.x - point.x) * 100, (data.width - 1) * 100), 0);
+        }
+        gui_slider_update_indicator(data);
+        gui_slider_bang(data);
+    }
+}
+
+function gui_slider_onmouseup(id) {
+    if (id in touches) {
+        delete touches[id];
+    }
+}
+
+// radio: vradio, hradio
+function gui_radio_rect(data) {
+    let width = data.size;
+    let height = data.size;
+    if (data.type === "vradio") {
+        height *= data.number;
+    }
+    else {
+        width *= data.number;
+    }
+    return {
+        x: data.x_pos,
+        y: data.y_pos,
+        width: width,
+        height: height,
+        fill: colfromload(data.bg_color),
+        id: `${data.id}_rect`,
+        class: "border clickable"
+    }
+}
+
+function gui_radio_line(data, p1, p2, p3, p4, button_index) {
+    return {
+        x1: p1,
+        y1: p2,
+        x2: p3,
+        y2: p4,
+        id: `${data.id}_line_${button_index}`,
+        class: "border unclickable"
+    }
+}
+
+function gui_radio_button(data, p1, p2, p3, p4, button_index, state) {
+    return {
+        x: p1,
+        y: p2,
+        width: p3 - p1,
+        height: p4 - p2,
+        fill: colfromload(data.fg_color),
+        stroke: colfromload(data.fg_color),
+        display: state ? "inline" : "none",
+        id: `${data.id}_button_${button_index}`,
+        class: "unclickable"
+    }
+}
+
+function gui_radio_remove_lines_buttons(data) {
+    for (const line of data.lines) {
+        line.parentNode.removeChild(line);
+    }
+    for (const button of data.buttons) {
+        button.parentNode.removeChild(button);
+    }
+}
+
+function gui_radio_lines_buttons(data, is_creating) {
+    const n = data.number;
+    const d = data.size;
+    const s = d / 4;
+    const x1 = data.x_pos;
+    const y1 = data.y_pos;
+    let xi = x1;
+    let yi = y1;
+    const on = data.value;
+    data.drawn = on;
+    for (let i = 0; i < n; i++) {
+        if (data.type === "vradio") {
+            if (is_creating) {
+                if (i) {
+                    const line = create_item("line", gui_radio_line(data, x1, yi, x1 + d, yi, i));
+                    data.lines.push(line);
+                }
+                const button = create_item("rect", gui_radio_button(data, x1 + s, yi + s, x1 + d - s, yi + d - s, i, on === i));
+                data.buttons.push(button);
+            }
+            else {
+                if (i) {
+                    configure_item(data.lines[i - 1], gui_radio_line(data, x1, yi, x1 + d, yi, i));
+                }
+                configure_item(data.buttons[i], gui_radio_button(data, x1 + s, yi + s, x1 + d - s, yi + d - s, i, on === i));
+            }
+            yi += d;
+        }
+        else {
+            if (is_creating) {
+                if (i) {
+                    const line = create_item("line", gui_radio_line(data, xi, y1, xi, y1 + d, i));
+                    data.lines.push(line);
+                }
+                const button = create_item("rect", gui_radio_button(data, xi + s, y1 + s, xi + d - s, yi + d - s, i, on === i));
+                data.buttons.push(button);
+            }
+            else {
+                if (i) {
+                    configure_item(data.lines[i - 1], gui_radio_line(data, xi, y1, xi, y1 + d, i));
+                }
+                configure_item(data.buttons[i], gui_radio_button(data, xi + s, y1 + s, xi + d - s, yi + d - s, i, on === i));
+            }
+            xi += d;
+        }
+    }
+}
+
+function gui_radio_create_lines_buttons(data) {
+    data.lines = [];
+    data.buttons = [];
+    gui_radio_lines_buttons(data, true);
+}
+
+function gui_radio_update_lines_buttons(data) {
+    gui_radio_lines_buttons(data, false);
+}
+
+function gui_radio_text(data) {
+    return gui_text(data);
+}
+
+function gui_radio_update_button(data) {
+    configure_item(data.buttons[data.drawn], {
+        display: "none"
+    });
+    configure_item(data.buttons[data.value], {
+        fill: colfromload(data.fg_color),
+        stroke: colfromload(data.fg_color),
+        display: "inline"
+    });
+    data.drawn = data.value;
+}
+
+function gui_radio_onmousedown(data, e) {
+    const p = gui_mousepoint(e);
+    if (data.type === "vradio") {
+        data.value = Math.floor((p.y - data.y_pos) / data.size);
+    }
+    else {
+        data.value = Math.floor((p.x - data.x_pos) / data.size);
+    }
+    gui_radio_update_button(data);
+    Module.pd.sendFloat(data.send, data.value);
+}
+
+// drag events
+if (isMobile) {
+    window.addEventListener("touchmove", function (e) {
+        e = e || window.event;
+        for (const touch of e.changedTouches) {
+            gui_slider_onmousemove(touch, touch.identifier);
+        }
+    });
+    window.addEventListener("touchend", function (e) {
+        e = e || window.event;
+        for (const touch of e.changedTouches) {
+            gui_slider_onmouseup(touch.identifier);
+        }
+    });
+    window.addEventListener("touchcancel", function (e) {
+        e = e || window.event;
+        for (const touch of e.changedTouches) {
+            gui_slider_onmouseup(touch.identifier);
+        }
+    });
+}
+else {
+    window.addEventListener("mousemove", function (e) {
+        e = e || window.event;
+        gui_slider_onmousemove(e, 0);
+    });
+    window.addEventListener("mouseup", function (e) {
+        gui_slider_onmouseup(0);
+    });
+    window.addEventListener("mouseleave", function (e) {
+        gui_slider_onmouseup(0);
+    });
 }
 
 // cnv
@@ -1260,9 +1828,9 @@ function openPatch(content, filename) {
                                 data.y_off = parseInt(args[13]);
                                 data.font = parseInt(args[14]);
                                 data.fontsize = parseInt(args[15]);
-                                data.bg_color = parseInt(args[16]);
-                                data.fg_color = parseInt(args[17]);
-                                data.label_color = parseInt(args[18]);
+                                data.bg_color = isNaN(args[16]) ? args[16] : parseInt(args[16]);
+                                data.fg_color = isNaN(args[17]) ? args[17] : parseInt(args[17]);
+                                data.label_color = isNaN(args[18]) ? args[18] : parseInt(args[18]);
                                 data.id = `${data.type}_${id++}`;
 
                                 // create svg
@@ -1304,9 +1872,9 @@ function openPatch(content, filename) {
                                 data.y_off = parseInt(args[11]);
                                 data.font = parseInt(args[12]);
                                 data.fontsize = parseInt(args[13]);
-                                data.bg_color = parseInt(args[14]);
-                                data.fg_color = parseInt(args[15]);
-                                data.label_color = parseInt(args[16]);
+                                data.bg_color = isNaN(args[14]) ? args[14] : parseInt(args[14]);
+                                data.fg_color = isNaN(args[15]) ? args[15] : parseInt(args[15]);
+                                data.label_color = isNaN(args[16]) ? args[16] : parseInt(args[16]);
                                 data.init_value = parseFloat(args[17]);
                                 data.default_value = parseFloat(args[18]);
                                 data.value = data.init && data.init_value ? data.default_value : 0;
@@ -1334,6 +1902,110 @@ function openPatch(content, filename) {
                                 gui_subscribe(data);
                             }
                             break;
+                        case "vsl":
+                        case "hsl":
+                            if (canvasLevel === 1 && args.length === 23 && args[11] !== "empty" && args[12] !== "empty") {
+                                const data = {};
+                                data.x_pos = parseInt(args[2]);
+                                data.y_pos = parseInt(args[3]);
+                                data.type = args[4];
+                                data.width = parseInt(args[5]);
+                                data.height = parseInt(args[6]);
+                                data.bottom = parseInt(args[7]);
+                                data.top = parseInt(args[8]);
+                                data.log = parseInt(args[9]);
+                                data.init = parseInt(args[10]);
+                                data.send = args[11];
+                                data.receive = args[12];
+                                data.label = args[13] === "empty" ? "" : args[13];
+                                data.x_off = parseInt(args[14]);
+                                data.y_off = parseInt(args[15]);
+                                data.font = parseInt(args[16]);
+                                data.fontsize = parseInt(args[17]);
+                                data.bg_color = isNaN(args[18]) ? args[18] : parseInt(args[18]);
+                                data.fg_color = isNaN(args[19]) ? args[19] : parseInt(args[19]);
+                                data.label_color = isNaN(args[20]) ? args[20] : parseInt(args[20]);
+                                data.default_value = parseFloat(args[21]);
+                                data.steady_on_click = parseFloat(args[22]);
+                                data.value = data.init ? data.default_value : 0;
+                                data.id = `${data.type}_${id++}`;
+
+                                // create svg
+                                data.rect = create_item("rect", gui_slider_rect(data));
+                                data.indicator = create_item("line", gui_slider_indicator(data));
+                                data.text = create_item("text", gui_slider_text(data));
+                                data.text.textContent = data.label;
+
+                                // handle event
+                                gui_slider_check_minmax(data);
+                                if (isMobile) {
+                                    data.rect.addEventListener("touchstart", function (e) {
+                                        e = e || window.event;
+                                        for (const touch of e.changedTouches) {
+                                            gui_slider_onmousedown(data, touch, touch.identifier);
+                                        }
+                                    });
+                                }
+                                else {
+                                    data.rect.addEventListener("mousedown", function (e) {
+                                        e = e || window.event;
+                                        gui_slider_onmousedown(data, e, 0);
+                                    });
+                                }
+                                // subscribe receiver
+                                gui_subscribe(data);
+                            }
+                            break;
+                        case "vradio":
+                        case "hradio":
+                            if (canvasLevel === 1 && args.length === 20 && args[9] !== "empty" && args[10] !== "empty") {
+                                const data = {};
+                                data.x_pos = parseInt(args[2]);
+                                data.y_pos = parseInt(args[3]);
+                                data.type = args[4];
+                                data.size = parseInt(args[5]);
+                                data.new_old = parseInt(args[6]);
+                                data.init = parseInt(args[7]);
+                                data.number = parseInt(args[8]) || 1;
+                                data.send = args[9];
+                                data.receive = args[10];
+                                data.label = args[11] === "empty" ? "" : args[11];
+                                data.x_off = parseInt(args[12]);
+                                data.y_off = parseInt(args[13]);
+                                data.font = parseInt(args[14]);
+                                data.fontsize = parseInt(args[15]);
+                                data.bg_color = isNaN(args[16]) ? args[16] : parseInt(args[16]);
+                                data.fg_color = isNaN(args[17]) ? args[17] : parseInt(args[17]);
+                                data.label_color = isNaN(args[18]) ? args[18] : parseInt(args[18]);
+                                data.default_value = parseFloat(args[19]);
+                                data.value = data.init ? data.default_value : 0;
+                                data.id = `${data.type}_${id++}`;
+
+                                // create svg
+                                data.rect = create_item("rect", gui_radio_rect(data));
+                                gui_radio_create_lines_buttons(data);
+                                data.text = create_item("text", gui_radio_text(data));
+                                data.text.textContent = data.label;
+
+                                // handle event
+                                if (isMobile) {
+                                    data.rect.addEventListener("touchstart", function (e) {
+                                        e = e || window.event;
+                                        for (const touch of e.changedTouches) {
+                                            gui_radio_onmousedown(data, touch);
+                                        }
+                                    });
+                                }
+                                else {
+                                    data.rect.addEventListener("mousedown", function (e) {
+                                        e = e || window.event;
+                                        gui_radio_onmousedown(data, e);
+                                    });
+                                }
+                                // subscribe receiver
+                                gui_subscribe(data);
+                            }
+                            break;
                         case "cnv":
                             if (canvasLevel === 1 && args.length === 18 && args[8] !== "empty" && args[9] !== "empty") {
                                 const data = {};
@@ -1350,8 +2022,8 @@ function openPatch(content, filename) {
                                 data.y_off = parseInt(args[12]);
                                 data.font = parseInt(args[13]);
                                 data.fontsize = parseInt(args[14]);
-                                data.bg_color = parseInt(args[15]);
-                                data.label_color = parseInt(args[16]);
+                                data.bg_color = isNaN(args[15]) ? args[15] : parseInt(args[15]);
+                                data.label_color = isNaN(args[16]) ? args[16] : parseInt(args[16]);
                                 data.unknown = parseFloat(args[17]);
                                 data.id = `${data.type}_${id++}`;
 
@@ -1385,11 +2057,11 @@ function openPatch(content, filename) {
                     data.id = `${data.type}_${id++}`;
 
                     // create svg
-                    data.text = [];
+                    data.texts = [];
                     for (let i = 0; i < data.comment.length; i++) {
                         const text = create_item("text", gui_text_text(data, i));
                         text.textContent = data.comment[i];
-                        data.text.push(text);
+                        data.texts.push(text);
                     }
                 }
                 break;
@@ -1467,7 +2139,7 @@ async function init() {
     }
     if (!content) {
         // load default patch content
-        content = "#N canvas 50 50 300 500 10;\n#X obj 0 0 cnv 15 300 550 cnv-s cnv-r PdWebParty 80 24 0 24 -99865\n-262144 0;\n#N canvas 315 262 878 533 sound 0;\n#X obj 84 469 dac~;\n#X obj 85 321 osc~;\n#X obj 84 294 +~;\n#X obj 80 246 osc~;\n#X obj 82 271 *~;\n#X obj 167 246 mtof~;\n#X obj 79 224 mtof~;\n#X obj 167 224 sig~;\n#X obj 79 203 sig~;\n#X obj 168 204 + 40;\n#X obj 85 403 hip~ 40;\n#X obj 85 353 *~;\n#X obj 245 308 vline~;\n#X obj 320 243 + 50;\n#X obj 167 66 metro 125;\n#X obj 245 328 *~;\n#X obj 320 223 * 200;\n#X obj 245 265 pack f f;\n#X msg 245 287 \\$1 5 \\, 0 \\$2 5;\n#X obj 85 378 lop~ 2000;\n#X obj 245 244 + 0.5;\n#X obj 245 223 * 0.5;\n#X obj 167 106 sel 0;\n#X obj 167 86 random 4;\n#X obj 78 180 random 120;\n#X obj 168 180 random 120;\n#X obj 244 180 random 100;\n#X obj 320 179 random 100;\n#X obj 245 202 / 99;\n#X obj 320 200 / 99;\n#X obj 167 45 r toggle-s;\n#X obj 194 125 s button-r;\n#X obj 78 127 r button-s;\n#X obj 86 427 *~ 0.5;\n#N canvas 726 271 468 501 show 0;\n#X obj 52 132 random 100;\n#X obj 52 152 / 99;\n#X obj 52 328 + 5;\n#X msg 67 266 285 \\$1;\n#X obj 67 286 -;\n#X obj 52 308 *;\n#X obj 129 130 random 100;\n#X obj 129 150 / 99;\n#X obj 144 284 -;\n#X obj 129 306 *;\n#X obj 129 326 + 45;\n#X msg 144 264 405 \\$1;\n#X obj 66 182 random 100;\n#X obj 66 202 / 99;\n#X obj 66 242 + 15;\n#X obj 150 182 random 100;\n#X obj 150 202 / 99;\n#X obj 150 242 + 15;\n#X obj 53 354 pack f f;\n#X msg 54 374 pos \\$1 \\$2;\n#X obj 144 355 pack f f;\n#X msg 145 375 vis_size \\$1 \\$2;\n#X obj 245 212 * -65536;\n#X obj 308 212 * -256;\n#X obj 360 214 * -1;\n#X obj 295 312 +;\n#X obj 280 335 +;\n#X obj 280 357 - 1;\n#X msg 281 378 color \\$1 \\$1;\n#X obj 191 423 s;\n#X obj 166 74 t b b b b b b b s;\n#X obj 166 50 inlet;\n#X obj 228 164 + 128;\n#X obj 226 132 random 128;\n#X obj 298 132 random 128;\n#X obj 367 133 random 128;\n#X obj 302 165 + 128;\n#X obj 360 165 + 128;\n#X obj 66 222 * 185;\n#X obj 150 222 * 185;\n#X connect 0 0 1 0;\n#X connect 1 0 5 0;\n#X connect 2 0 18 0;\n#X connect 3 0 4 0;\n#X connect 4 0 5 1;\n#X connect 5 0 2 0;\n#X connect 6 0 7 0;\n#X connect 7 0 9 0;\n#X connect 8 0 9 1;\n#X connect 9 0 10 0;\n#X connect 10 0 18 1;\n#X connect 11 0 8 0;\n#X connect 12 0 13 0;\n#X connect 13 0 38 0;\n#X connect 14 0 3 0;\n#X connect 14 0 20 0;\n#X connect 15 0 16 0;\n#X connect 16 0 39 0;\n#X connect 17 0 11 0;\n#X connect 17 0 20 1;\n#X connect 18 0 19 0;\n#X connect 19 0 29 0;\n#X connect 20 0 21 0;\n#X connect 21 0 29 0;\n#X connect 22 0 26 0;\n#X connect 23 0 25 0;\n#X connect 24 0 25 1;\n#X connect 25 0 26 1;\n#X connect 26 0 27 0;\n#X connect 27 0 28 0;\n#X connect 28 0 29 0;\n#X connect 30 0 0 0;\n#X connect 30 1 12 0;\n#X connect 30 2 6 0;\n#X connect 30 3 15 0;\n#X connect 30 4 33 0;\n#X connect 30 5 34 0;\n#X connect 30 6 35 0;\n#X connect 30 7 29 1;\n#X connect 31 0 30 0;\n#X connect 32 0 22 0;\n#X connect 33 0 32 0;\n#X connect 34 0 36 0;\n#X connect 35 0 37 0;\n#X connect 36 0 23 0;\n#X connect 37 0 24 0;\n#X connect 38 0 14 0;\n#X connect 39 0 17 0;\n#X restore 430 248 pd show;\n#X msg 430 226 symbol show\\$1-r;\n#X msg 649 331 symbol show\\$1-r;\n#X obj 608 389 s;\n#X obj 567 213 t b f;\n#X obj 554 280 * -65536;\n#X obj 617 280 * -256;\n#X obj 669 282 * -1;\n#X obj 620 302 +;\n#X obj 605 325 +;\n#X obj 605 347 - 1;\n#X obj 569 254 unpack f f f;\n#X msg 567 233 220 220 220;\n#X msg 567 191 0 \\, 1 \\, 2 \\, 3 \\, 4 \\, 5 \\, 6 \\, 7;\n#X obj 567 169 loadbang;\n#X obj 78 149 t b b b b b, f 40;\n#X obj 430 178 random 4;\n#X msg 606 366 pos 70 310 \\, vis_size 15 15 \\, color 0 0;\n#X connect 1 0 11 0;\n#X connect 2 0 1 0;\n#X connect 3 0 4 0;\n#X connect 4 0 2 0;\n#X connect 5 0 4 1;\n#X connect 5 0 2 1;\n#X connect 6 0 3 0;\n#X connect 7 0 5 0;\n#X connect 8 0 6 0;\n#X connect 9 0 7 0;\n#X connect 10 0 33 0;\n#X connect 11 0 19 0;\n#X connect 12 0 15 0;\n#X connect 12 0 15 1;\n#X connect 13 0 17 1;\n#X connect 14 0 23 0;\n#X connect 15 0 11 1;\n#X connect 16 0 13 0;\n#X connect 17 0 18 0;\n#X connect 18 0 12 0;\n#X connect 19 0 10 0;\n#X connect 20 0 17 0;\n#X connect 21 0 20 0;\n#X connect 22 1 31 0;\n#X connect 23 0 22 0;\n#X connect 24 0 8 0;\n#X connect 25 0 9 0;\n#X connect 26 0 28 0;\n#X connect 27 0 29 0;\n#X connect 28 0 21 0;\n#X connect 29 0 16 0;\n#X connect 30 0 14 0;\n#X connect 32 0 49 0;\n#X connect 33 0 0 0;\n#X connect 33 0 0 1;\n#X connect 35 0 34 0;\n#X connect 36 0 37 1;\n#X connect 38 0 46 0;\n#X connect 38 1 36 0;\n#X connect 39 0 43 0;\n#X connect 40 0 42 0;\n#X connect 41 0 42 1;\n#X connect 42 0 43 1;\n#X connect 43 0 44 0;\n#X connect 44 0 51 0;\n#X connect 45 0 39 0;\n#X connect 45 1 40 0;\n#X connect 45 2 41 0;\n#X connect 46 0 45 0;\n#X connect 47 0 38 0;\n#X connect 48 0 47 0;\n#X connect 49 0 24 0;\n#X connect 49 1 25 0;\n#X connect 49 2 26 0;\n#X connect 49 3 27 0;\n#X connect 49 4 50 0;\n#X connect 50 0 35 0;\n#X connect 51 0 37 0;\n#X restore 4 513 pd sound;\n#X obj 5 45 cnv 15 290 450 cnv2-s cnv2-r empty 20 12 0 14 -228856 -66577\n0;\n#X obj 70 310 cnv 15 15 15 show0-s show0-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show1-s show1-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show2-s show2-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show3-s show3-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show4-s show4-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show5-s show5-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show6-s show6-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show7-s show7-r empty 20 12 0 14 -262144\n-66577 0;\n#X text 11 130 Sharing:;\n#X text 11 49 PdWebParty:;\n#X text 11 145 - Upload your patch somewhere on the internet;\n#X text 21 160 (e.g. Patchstorage) and put the download LINK:;\n#X text 21 175 https://pdwebparty.herokuapp.com/?url=LINK;\n#X text 11 64 - Run your pd patches in the browser.;\n#X text 11 80 - GUI objects should have send/receive names.;\n#X text 11 95 - Currently \\, only [bng] \\, [tgl] \\, [cnv] are supported.\n;\n#X text 11 110 - Drag & Drop your pd patch here to upload.;\n#X obj 21 260 bng 120 125 50 0 button-s button-r button 26 60 0 20\n-204786 -4034 -13381;\n#X obj 158 260 tgl 120 0 toggle-s toggle-r toggle 24 60 0 20 -261234\n-258113 -86277 0 1;\n";
+        content = "#N canvas 50 50 300 500 10;\n#X obj 0 0 cnv 15 300 550 cnv-s cnv-r PdWebParty 80 24 0 24 -99865\n-262144 0;\n#N canvas 460 246 878 533 sound 0;\n#X obj 84 488 dac~;\n#X obj 85 340 osc~;\n#X obj 84 313 +~;\n#X obj 80 265 osc~;\n#X obj 82 290 *~;\n#X obj 167 246 mtof~;\n#X obj 79 243 mtof~;\n#X obj 167 224 sig~;\n#X obj 79 222 sig~;\n#X obj 168 204 + 40;\n#X obj 85 422 hip~ 40;\n#X obj 85 372 *~;\n#X obj 245 308 vline~;\n#X obj 320 243 + 50;\n#X obj 167 66 metro 125;\n#X obj 245 328 *~;\n#X obj 320 223 * 200;\n#X obj 245 265 pack f f;\n#X obj 85 397 lop~ 2000;\n#X obj 245 244 + 0.5;\n#X obj 245 223 * 0.5;\n#X obj 167 106 sel 0;\n#X obj 244 180 random 100;\n#X obj 320 179 random 100;\n#X obj 245 202 / 99;\n#X obj 320 200 / 99;\n#X obj 167 45 r toggle-s;\n#X obj 194 125 s button-r;\n#X obj 78 127 r button-s;\n#X obj 86 446 *~ 0.5;\n#N canvas 726 271 468 501 show 0;\n#X obj 52 132 random 100;\n#X obj 52 152 / 99;\n#X obj 52 328 + 5;\n#X msg 67 266 285 \\$1;\n#X obj 67 286 -;\n#X obj 52 308 *;\n#X obj 129 130 random 100;\n#X obj 129 150 / 99;\n#X obj 144 284 -;\n#X obj 129 306 *;\n#X obj 129 326 + 45;\n#X msg 144 264 405 \\$1;\n#X obj 66 182 random 100;\n#X obj 66 202 / 99;\n#X obj 66 242 + 15;\n#X obj 150 182 random 100;\n#X obj 150 202 / 99;\n#X obj 150 242 + 15;\n#X obj 53 354 pack f f;\n#X msg 54 374 pos \\$1 \\$2;\n#X obj 144 355 pack f f;\n#X msg 145 375 vis_size \\$1 \\$2;\n#X obj 245 212 * -65536;\n#X obj 308 212 * -256;\n#X obj 360 214 * -1;\n#X obj 295 312 +;\n#X obj 280 335 +;\n#X obj 280 357 - 1;\n#X msg 281 378 color \\$1 \\$1;\n#X obj 191 423 s;\n#X obj 166 74 t b b b b b b b s;\n#X obj 166 50 inlet;\n#X obj 228 164 + 128;\n#X obj 226 132 random 128;\n#X obj 298 132 random 128;\n#X obj 367 133 random 128;\n#X obj 302 165 + 128;\n#X obj 360 165 + 128;\n#X obj 66 222 * 185;\n#X obj 150 222 * 185;\n#X connect 0 0 1 0;\n#X connect 1 0 5 0;\n#X connect 2 0 18 0;\n#X connect 3 0 4 0;\n#X connect 4 0 5 1;\n#X connect 5 0 2 0;\n#X connect 6 0 7 0;\n#X connect 7 0 9 0;\n#X connect 8 0 9 1;\n#X connect 9 0 10 0;\n#X connect 10 0 18 1;\n#X connect 11 0 8 0;\n#X connect 12 0 13 0;\n#X connect 13 0 38 0;\n#X connect 14 0 3 0;\n#X connect 14 0 20 0;\n#X connect 15 0 16 0;\n#X connect 16 0 39 0;\n#X connect 17 0 11 0;\n#X connect 17 0 20 1;\n#X connect 18 0 19 0;\n#X connect 19 0 29 0;\n#X connect 20 0 21 0;\n#X connect 21 0 29 0;\n#X connect 22 0 26 0;\n#X connect 23 0 25 0;\n#X connect 24 0 25 1;\n#X connect 25 0 26 1;\n#X connect 26 0 27 0;\n#X connect 27 0 28 0;\n#X connect 28 0 29 0;\n#X connect 30 0 0 0;\n#X connect 30 1 12 0;\n#X connect 30 2 6 0;\n#X connect 30 3 15 0;\n#X connect 30 4 33 0;\n#X connect 30 5 34 0;\n#X connect 30 6 35 0;\n#X connect 30 7 29 1;\n#X connect 31 0 30 0;\n#X connect 32 0 22 0;\n#X connect 33 0 32 0;\n#X connect 34 0 36 0;\n#X connect 35 0 37 0;\n#X connect 36 0 23 0;\n#X connect 37 0 24 0;\n#X connect 38 0 14 0;\n#X connect 39 0 17 0;\n#X restore 430 248 pd show;\n#X msg 430 226 symbol show\\$1-r;\n#X msg 649 331 symbol show\\$1-r;\n#X obj 608 389 s;\n#X obj 567 213 t b f;\n#X obj 554 280 * -65536;\n#X obj 617 280 * -256;\n#X obj 669 282 * -1;\n#X obj 620 302 +;\n#X obj 605 325 +;\n#X obj 605 347 - 1;\n#X obj 569 254 unpack f f f;\n#X msg 567 233 220 220 220;\n#X msg 567 191 0 \\, 1 \\, 2 \\, 3 \\, 4 \\, 5 \\, 6 \\, 7;\n#X obj 567 169 loadbang;\n#X obj 78 149 t b b b b b, f 40;\n#X obj 430 178 random 4;\n#X msg 606 366 pos 70 310 \\, vis_size 15 15;\n#X obj 347 114 * 2;\n#X obj 399 32 loadbang;\n#X msg 399 63 125;\n#X obj 285 44 r hslider-s;\n#X obj 399 85 s hslider-r;\n#X obj 479 111 r hradio-s;\n#X obj 479 132 * 10;\n#X obj 167 86 random 6;\n#X obj 386 144 * 0.2;\n#X obj 347 144 * 0.8;\n#X obj 168 180 random 80;\n#X msg 245 287 \\$1 3 \\, 0 \\$2 3;\n#X obj 77 201 + 20;\n#X obj 78 180 random 100;\n#X obj 479 87 s hradio-r;\n#X msg 479 65 4;\n#X connect 1 0 11 0;\n#X connect 2 0 1 0;\n#X connect 3 0 4 0;\n#X connect 4 0 2 0;\n#X connect 5 0 4 1;\n#X connect 5 0 2 1;\n#X connect 6 0 3 0;\n#X connect 7 0 5 0;\n#X connect 8 0 6 0;\n#X connect 9 0 7 0;\n#X connect 10 0 29 0;\n#X connect 11 0 18 0;\n#X connect 12 0 15 0;\n#X connect 12 0 15 1;\n#X connect 13 0 17 1;\n#X connect 14 0 55 0;\n#X connect 15 0 11 1;\n#X connect 16 0 13 0;\n#X connect 17 0 59 0;\n#X connect 18 0 10 0;\n#X connect 19 0 17 0;\n#X connect 20 0 19 0;\n#X connect 21 1 27 0;\n#X connect 22 0 24 0;\n#X connect 23 0 25 0;\n#X connect 24 0 20 0;\n#X connect 25 0 16 0;\n#X connect 26 0 14 0;\n#X connect 28 0 45 0;\n#X connect 29 0 0 0;\n#X connect 29 0 0 1;\n#X connect 31 0 30 0;\n#X connect 32 0 33 1;\n#X connect 34 0 42 0;\n#X connect 34 1 32 0;\n#X connect 35 0 39 0;\n#X connect 36 0 38 0;\n#X connect 37 0 38 1;\n#X connect 38 0 39 1;\n#X connect 39 0 40 0;\n#X connect 40 0 47 0;\n#X connect 41 0 35 0;\n#X connect 41 1 36 0;\n#X connect 41 2 37 0;\n#X connect 42 0 41 0;\n#X connect 43 0 34 0;\n#X connect 44 0 43 0;\n#X connect 45 0 61 0;\n#X connect 45 1 58 0;\n#X connect 45 2 22 0;\n#X connect 45 3 23 0;\n#X connect 45 4 46 0;\n#X connect 46 0 31 0;\n#X connect 47 0 33 0;\n#X connect 48 0 56 0;\n#X connect 48 0 57 0;\n#X connect 49 0 50 0;\n#X connect 49 0 63 0;\n#X connect 50 0 52 0;\n#X connect 51 0 14 1;\n#X connect 51 0 48 0;\n#X connect 53 0 54 0;\n#X connect 54 0 9 1;\n#X connect 55 0 21 0;\n#X connect 56 0 13 1;\n#X connect 57 0 16 1;\n#X connect 58 0 9 0;\n#X connect 59 0 12 0;\n#X connect 60 0 8 0;\n#X connect 61 0 60 0;\n#X connect 63 0 62 0;\n#X restore 4 513 pd sound;\n#X obj 5 45 cnv 15 290 450 cnv2-s cnv2-r empty 20 12 0 14 -228856 -66577\n0;\n#X obj 70 310 cnv 15 15 15 show0-s show0-r empty 20 12 0 14 -138156\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show1-s show1-r empty 20 12 0 14 -248825\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show2-s show2-r empty 20 12 0 14 -190655\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show3-s show3-r empty 20 12 0 14 -199287\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show4-s show4-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show5-s show5-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show6-s show6-r empty 20 12 0 14 -262144\n-66577 0;\n#X obj 70 310 cnv 15 15 15 show7-s show7-r empty 20 12 0 14 -262144\n-66577 0;\n#X text 11 140 Sharing:;\n#X text 11 155 - Upload your patch somewhere on the internet;\n#X text 21 170 (e.g. Patchstorage) and put the download LINK:;\n#X text 21 185 https://pdwebparty.herokuapp.com/?url=LINK;\n#X text 11 80 - GUI objects should have send/receive names.;\n#X obj 24 260 bng 120 125 50 0 button-s button-r button 26 60 0 20\n-204786 -4034 -13381;\n#X obj 156 260 tgl 120 0 toggle-s toggle-r toggle 24 60 0 20 -261234\n-258113 -86277 0 1;\n#X text 11 95 - [bng] \\, [tgl] \\, [vsl] \\, [hsl] \\, [vradio] \\,;\n#X text 11 110 [hradio] \\, [cnv] \\, and comment are supported.;\n#X text 11 65 - Drag & Drop your pd patch here to upload.;\n#X text 11 49 Running:;\n#X obj 27 391 hsl 247 28 175 75 0 0 hslider-s hslider-r Slider 94 14\n0 16 -203904 -16662 -16662 12500 1;\n#X obj 24 430 hradio 28 1 0 9 hradio-s hradio-r empty 90 14 0 18 -232576\n-45076 -1 4;\n";
         filename = "default.pd";
     }
     loading.style.display = "none";
@@ -1503,3 +2175,11 @@ filter.addEventListener("drop", function (e) {
     const file = e.dataTransfer.files[0];
     uploadPatch(file);
 });
+
+// disable context menu
+window.oncontextmenu = function (e) {
+    e = e || window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+};
