@@ -1750,13 +1750,13 @@ function pd_fontsize_to_gui_fontsize(fontsize) {
 function gui_text_text(data, line_index) {
     const left_margin = 2;
     const fmap = font_height_map();
-    const font_height = fmap[fontSize] * (line_index + 1) * 0.9; // note: modified
+    const font_height = fmap[fontSize] * (line_index + 1);
     return {
         transform: `translate(${left_margin - 0.5})`,
         x: data.x_pos,
         y: data.y_pos + font_height + gobj_font_y_kludge(fontSize),
         "shape-rendering": "crispEdges",
-        "font-size": pd_fontsize_to_gui_fontsize(fontSize) * 0.9 + "px", // note: modified
+        "font-size": pd_fontsize_to_gui_fontsize(fontSize) + "px",
         "font-weight": "normal",
         id: `${data.id}_text_${line_index}`,
         class: "unclickable"
