@@ -13,6 +13,7 @@
 - [Developing PdWebParty](#developing-pdwebparty)
 - [Reporting Bugs](#reporting-bugs)
 - [Examples](#examples)
+- [Tutorials](#tutorials)
 - [Acknowledgements](#acknowledgements)
 - [Author](#author)
 
@@ -77,6 +78,9 @@ Please post an [issue](https://github.com/cuinjune/PdWebParty/issues) if you fac
 ## Examples
 * Yann Seznec: https://bit.ly/2VE28Rl
 * Please contact the [author](#author) if you create something interesting to share.
+
+## Tutorials
+* Yann Seznec: https://www.youtube.com/playlist?list=PLXGA7pVjV1jfPDdz8cWBXMsej9kdZW11n
 
 ## Acknowledgements
 * Jonathan Wilkes, Ivica Ico Bukvic, and the Purr Data team for help and feedback;
